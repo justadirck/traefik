@@ -3,10 +3,12 @@ version: "3.8"
 services:
 
   hub-agent:
+    pull_policy: always  
     image: ghcr.io/traefik/hub-agent-traefik:v1.1.0
-    pull_policy: always
     container_name: hub-agent
-    restart: "on-failure"
+    restart: on-failure
+    env_file:
+      - .env
     command:
       - run
       - --hub.token=${hub.token}
