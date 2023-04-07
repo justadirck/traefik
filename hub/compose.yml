@@ -9,23 +9,21 @@ services:
     restart: "on-failure"
     command:
       - run
-      - --hub.token=376fb19e-fb60-4674-838f-d30fd818bf18
+      - --hub.token=${hub.token}
       - --auth-server.advertise-url=http://hub-agent
       - --traefik.host=traefik
       - --traefik.tls.insecure=true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-    - traefik-hub
+      - traefik-hub
     depends_on:
       - traefik
 
-  # Start Traefik with the latest version
   traefik:
     image: traefik:v2.9
     container_name: traefik
     command:
-      # Enable Hub communication (open the port 9900 and 9901 by default)
       - --experimental.hub=true
       - --hub.tls.insecure=true
       - --metrics.prometheus.addrouterslabels=true
