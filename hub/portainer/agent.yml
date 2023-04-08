@@ -1,24 +1,21 @@
-version: "3.8"
 
 services:
 
   hub-agent:
-    pull_policy: always  
     image: ghcr.io/traefik/hub-agent-traefik:v1.1.0
+    pull_policy: always
     container_name: hub-agent
-    restart: on-failure
-    env_file:
-      - .env
+    restart: "on-failure"
     command:
       - run
-      - --hub.token=${hub.token}
-      - --auth-server.advertise-url=http://hub-agent
+      - --hub.token=${token}
+      - --auth-server.advertise-url=${url}
       - --traefik.host=traefik
       - --traefik.tls.insecure=true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - traefik-hub
+    - traefik-hub
     depends_on:
       - traefik
 

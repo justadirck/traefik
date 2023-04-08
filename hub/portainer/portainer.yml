@@ -1,0 +1,26 @@
+# https://doc.traefik.io/traefik-hub/tutorials/docker/portainer/
+
+version: "3.9"
+
+services:
+
+  portainer:
+    image: portainer/portainer-ce:2.17.1
+    container_name: portainer
+    init: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 9443:9443
+    expose:
+      - 9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./portainer_data:/data
+    networks:
+      - portainer_traefik-hub
+
+networks:
+  portainer_traefik-hub:
+    external: true
